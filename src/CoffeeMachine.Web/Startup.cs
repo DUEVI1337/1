@@ -6,7 +6,7 @@ using CoffeeMachine.Application.Services;
 using CoffeeMachine.Application.Services.Interfaces;
 using CoffeeMachine.Infrastructure;
 using CoffeeMachine.Infrastructure.Repositories;
-
+using CoffeeMachine.Web.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

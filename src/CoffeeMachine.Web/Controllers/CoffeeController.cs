@@ -1,11 +1,14 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using CoffeeMachine.Application.Services.Interfaces;
 using CoffeeMachine.Domain.Dto;
 using CoffeeMachine.Domain.Entities;
+using CoffeeMachine.Web.Exceptions;
+using CoffeeMachine.Web.Exceptions.CustomExceptions;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,22 +40,17 @@ namespace CoffeeMachine.Web.Controllers
         /// <response code="404">not found coffee</response>
         [HttpPost]
         [Route("BuyCoffee")]
-        public async Task<ActionResult<List<BanknoteDto>>> BuyCoffee([FromBody] OrderDto order)
+        public async Task<List<BanknoteDto>> BuyCoffee([FromBody] OrderDto order)
         {
             var coffee = await _coffeeService.GetCoffeeDtoByIdAsync(order.CoffeeId);
             if (coffee == null)
-            {
-                Log.Information($"Object 'Coffee' by id: {order.CoffeeId}, not found");
-                return NotFound(order.CoffeeId);
-            }
+                throw new NullReferenceException();
 
             var deal = await _coffeeService.BuyCoffeeAsync(coffee, order.Banknotes, (TypeDeal)order.TypeDeal);
             if (deal == null)
-            {
-                Log.Information("impossible to give deal");
-                return BadRequest(order.Banknotes);
-            }
-            return Ok(deal);
+                throw new NullCashboxException();
+
+            return deal;
         }
 
         /// <summary>
@@ -64,16 +62,13 @@ namespace CoffeeMachine.Web.Controllers
         /// <response code="404">not found coffee</response>
         [HttpGet]
         [Route("Coffee/{id}")]
-        public async Task<ActionResult<CoffeeDto>> GetCoffeeDtoById(string id)
+        public async Task<CoffeeDto> GetCoffeeDtoById(string id)
         {
             var coffee = await _coffeeService.GetCoffeeDtoByIdAsync(id);
             if (coffee == null)
-            {
-                Log.Information($"Object 'Coffee' by id: {id}, not found");
-                return NotFound(id);
-            }
+                throw new NullReferenceException();
 
-            return Ok(coffee);
+            return coffee;
         }
 
         /// <summary>
@@ -83,9 +78,9 @@ namespace CoffeeMachine.Web.Controllers
         /// <response code="200">return list of coffee from database</response>
         [HttpGet]
         [Route("MenuCoffee")]
-        public async Task<ActionResult<List<CoffeeDto>>> GetListCoffeeDto()
+        public async Task<List<CoffeeDto>> GetListCoffeeDto()
         {
-            return Ok(await _coffeeService.GetListCoffeeDtoAsync());
+            return await _coffeeService.GetListCoffeeDtoAsync();
         }
     }
 }
