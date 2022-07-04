@@ -32,6 +32,7 @@ namespace CoffeeMachine.IntegrationTests
         {
             _factory = new WebAppFactory();
             _db = _factory.Services.CreateScope().ServiceProvider.GetService<DataContext>();
+            _db.Database.EnsureDeleted();
             _client = _factory.CreateClient();
         }
 

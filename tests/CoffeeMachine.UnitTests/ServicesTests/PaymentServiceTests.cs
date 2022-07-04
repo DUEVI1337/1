@@ -49,7 +49,7 @@ namespace CoffeeMachine.UnitTests.ServicesTests
             await _db.SaveChangesAsync();
             
             //Act
-            _paymentService.AddPaymentAsync(clientMoney, paymentExpected.CoffeeId.ToString(), deal);
+            _paymentService.AddPayment(clientMoney, paymentExpected.CoffeeId.ToString(), deal);
 
             //Assert
             var paymentActual = await _db.Payments.FindAsync(paymentExpected.PaymentId);
