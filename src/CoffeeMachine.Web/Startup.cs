@@ -61,7 +61,7 @@ namespace CoffeeMachine.Web
             });
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseNpgsql(Configuration.GetConnectionString("PgsqlConStr"));
+                opt.UseNpgsql(Configuration.GetConnectionString("DockerPgsql"));
             });
             services.AddTransient<GlobalExceptionHandler>()
                 .AddScoped<CoffeeRepository>()

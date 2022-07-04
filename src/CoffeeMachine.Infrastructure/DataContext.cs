@@ -10,6 +10,7 @@ namespace CoffeeMachine.Infrastructure
     {
         public DataContext(DbContextOptions<DataContext> opt) : base(opt)
         {
+            Database.EnsureCreated();
         }
 
         /// <summary>

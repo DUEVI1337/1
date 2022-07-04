@@ -18,6 +18,9 @@ using CoffeeMachine.Web.Exceptions.CustomExceptions;
 
 namespace CoffeeMachine.Web.Exceptions
 {
+    /// <summary>
+    /// custom middleware for exceptions that occur during application execution
+    /// </summary>
     public class GlobalExceptionHandler : IMiddleware
     {
         private readonly IWebHostEnvironment _env;
@@ -27,6 +30,12 @@ namespace CoffeeMachine.Web.Exceptions
             _env = env;
         }
 
+        /// <summary>
+        /// call next middleware or handle exception
+        /// </summary>
+        /// <param name="context">request of client</param>
+        /// <param name="next">ref of next middleware</param>
+        /// <returns></returns>
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
